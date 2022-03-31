@@ -6,7 +6,8 @@ import abi from "./utils/WavePortal.json";
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allWaves, setAllWaves] = useState([]);
-  const contractAddress = "0xC0A41828395969828d2712D41F1CBa6eea9A6216"
+  const [message, setMessage] = useState([]);
+  const contractAddress = "0x7ea3566D9DdCdee92B83498528747b002866E738"
   const contractABI = abi.abi;
 
   const getAllWaves = async ()=>{
@@ -81,10 +82,15 @@ export default function App() {
     }
   }
 
-  const wave = async () => {
+  const handleChange = async (event)=>{
+    await setMessage(event.target.value);
+    console.log(message)
+  }
+
+  const wave = async (event) => {
+    event.preventDefault()
     try{
       const {ethereum} = window;
-
       if (ethereum){
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
@@ -92,7 +98,7 @@ export default function App() {
         let count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
 
-        const waveTxn = await wavePortalContract.wave("this is a message");
+        const waveTxn = await wavePortalContract.wave(message,{ gasLimit: 300000 });    
         console.log("Mining...", waveTxn.hash);
 
         await waveTxn.wait();
@@ -121,12 +127,12 @@ export default function App() {
         </div>
 
         <div className="bio">
-        I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+        Type a message in the text box below and hit send to send a wave and message to the blockchain
         </div>
-
-        <button className="waveButton" onClick={wave}>
-          Wave at Me
-        </button>
+        <form onSubmit={wave}>
+          <input onChange={handleChange} type="text"></input>
+          <input className="waveButton" type="submit" value="Send"/>
+        </form>
         {!currentAccount && (
           <button className="waveButton" onClick={connectWallet}>
             Connect Wallet
