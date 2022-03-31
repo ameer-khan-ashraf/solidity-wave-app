@@ -1,4 +1,6 @@
-## Running React on Repl.it
+## Solidity Wave Portal Frontend
+
+This is the front end code for the solidity wave portal. Its made using the following Libraries:
 
 [React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
 
@@ -7,7 +9,9 @@
 Using the two in conjunction is one of the fastest ways to build a web app.
 
 ### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
+To run the application
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the `.replit` file.
+```shell
+  npm run dev
+```
+- Edit [App.jsx](#src/App.jsx) and watch it live update!
